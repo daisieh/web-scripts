@@ -11,3 +11,4 @@ def homepage():
 
 @app.route('/pyMesquiteFeedback', methods=['GET'])
 def feedback():
+    return "hello world"
