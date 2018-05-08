@@ -12,5 +12,5 @@ def homepage():
 @app.route('/pyMesquiteFeedback', methods=['POST'])
 def feedback():
     if request.method == 'POST':
-        print request
+        print(request)
         return request
