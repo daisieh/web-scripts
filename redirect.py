@@ -2,7 +2,7 @@ import flask
 from werkzeug.utils import secure_filename
 import sys
 import os
-import urllib 
+import urllib
 from time import strftime, time
 
 app = flask.Flask(__name__)
@@ -22,7 +22,7 @@ def startup():
 #<Request 'https://mesquiteproject.herokuapp.com/pyMesquiteStartup?build=	PreRelease-875	OS+%3D	Mac+OS+X	10.11.6	java+%3D	1.8.0_111	Oracle+Corporation' [GET]>
     
     ip = flask.request.remote_addr
-    raw = flask.request.query_string
+    raw = flask.request.query_string.decode("utf-8")
     app.logger.error('%s', raw)
 
     # the file we'll be appending version information to 
