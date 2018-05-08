@@ -16,6 +16,7 @@ def feedback():
 @app.route('/pyMesquiteStartup', methods=['POST', 'GET'])
 def startup():
 #     if flask.request.method == 'POST':
+    app.logger.info("Hello world!")
     app.logger.info('%s', flask.request)
     return flask.render_template('error.html', error=flask.request)
 
