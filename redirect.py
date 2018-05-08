@@ -31,19 +31,18 @@ def startup():
 #     open the file w/ appending mode 
     FILE = open(feedbackfile, "a")
 
-#     split the query string by the value delimiter, &. 
-    vallist = raw.split('&')
-
 #     print the start of the line with current time
     FILE.write('[%s] - ' % strftime("%Y-%m-%d %H:%M:%S"))
     FILE.write('ip = \t%s' % (ip))
     FILE.write('\t')
            
+#     split the query string by the value delimiter, &. 
+    vallist = urllib.parse.parse_qs(raw)
+
 #     for each value in the query string, print it after the line start           
-    for k in vallist:
-        tuple = k.split('=')
-        FILE.write('%s = %s, ' % (tuple[0], urllib.unquote_plus(tuple[1])))
-    
+    for key, value in vallist.items():
+        FILE.write('%s = %s, ' % (key, value))
+
 #     terminate the line     
     FILE.write('\n')
 
