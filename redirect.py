@@ -9,5 +9,15 @@ def homepage():
 
 @app.route('/pyMesquiteFeedback', methods=['POST'])
 def feedback():
-    if flask.request.method == 'POST':
+#     if flask.request.method == 'POST':
+        return flask.render_template('error.html', error=flask.request)
+
+@app.route('/pyMesquiteStartup', methods=['POST', 'GET'])
+def feedback():
+#     if flask.request.method == 'POST':
+        return flask.render_template('error.html', error=flask.request)
+
+@app.route('/pyMesquiteBeans', methods=['POST', 'GET'])
+def feedback():
+#     if flask.request.method == 'POST':
         return flask.render_template('error.html', error=flask.request)
