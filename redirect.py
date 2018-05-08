@@ -28,13 +28,13 @@ def startup():
     # the file we'll be appending version information to 
     feedbackfile = "version_feedback.log"
 
-    open the file w/ appending mode 
+#     open the file w/ appending mode 
     FILE = open(feedbackfile, "a")
 
-    split the query string by the value delimiter, &. 
+#     split the query string by the value delimiter, &. 
     vallist = raw.split('&')
 
-    print the start of the line with current time
+#     print the start of the line with current time
     FILE.write('[%s] - ' % strftime("%Y-%m-%d %H:%M:%S"))
     FILE.write('ip = \t%s' % (ip))
     FILE.write('\t')
@@ -44,10 +44,10 @@ def startup():
         tuple = k.split('=')
         FILE.write('%s = %s, ' % (tuple[0], urllib.unquote_plus(tuple[1])))
     
-    terminate the line     
+#     terminate the line     
     FILE.write('\n')
 
-    flush and close 
+#     flush and close 
     FILE.flush()
     FILE.close()
     return flask.render_template('startup.html')
