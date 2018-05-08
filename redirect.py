@@ -39,7 +39,7 @@ def startup():
     FILE.write('ip = \t%s' % (ip))
     FILE.write('\t')
            
-    for each value in the query string, print it after the line start           
+#     for each value in the query string, print it after the line start           
     for k in vallist:
         tuple = k.split('=')
         FILE.write('%s = %s, ' % (tuple[0], urllib.unquote_plus(tuple[1])))
