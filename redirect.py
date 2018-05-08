@@ -14,13 +14,13 @@ def feedback():
     return flask.render_template('error.html', error=flask.request)
 
 @app.route('/pyMesquiteStartup', methods=['POST', 'GET'])
-def feedback():
+def startup():
 #     if flask.request.method == 'POST':
     app.logger.info('%s', flask.request)
     return flask.render_template('error.html', error=flask.request)
 
 @app.route('/pyMesquiteBeans', methods=['POST', 'GET'])
-def feedback():
+def beans():
 #     if flask.request.method == 'POST':
     app.logger.info('%s', flask.request)
     return flask.render_template('error.html', error=flask.request)
