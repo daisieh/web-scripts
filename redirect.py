@@ -10,14 +10,14 @@ def homepage():
 @app.route('/pyMesquiteFeedback', methods=['POST'])
 def feedback():
 #     if flask.request.method == 'POST':
-    app.logger.info('%s', flask.request)
+    app.logger.error('%s', flask.request)
     return flask.render_template('error.html', error=flask.request)
 
 @app.route('/pyMesquiteStartup', methods=['POST', 'GET'])
 def startup():
 #     if flask.request.method == 'POST':
-    app.logger.info("Hello world!")
-    app.logger.info('%s', flask.request)
+    app.logger.error("Hello world!")
+    app.logger.error('%s', flask.request)
     return flask.render_template('error.html', error=flask.request)
 
 @app.route('/pyMesquiteBeans', methods=['POST', 'GET'])
