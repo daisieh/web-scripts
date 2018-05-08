@@ -1,9 +1,7 @@
-from flask import Flask
-from flask import request
-from flask import make_response
+import flask
 from werkzeug.utils import secure_filename
 
-app = Flask(__name__)
+app = flask.Flask(__name__)
 
 @app.route('/')
 def homepage():
@@ -11,6 +9,5 @@ def homepage():
 
 @app.route('/pyMesquiteFeedback', methods=['POST'])
 def feedback():
-    if request.method == 'POST':
-        print(request)
-        return request
+    if flask.request.method == 'POST':
+        return flask.render_template('error.html', error=flask.request)
