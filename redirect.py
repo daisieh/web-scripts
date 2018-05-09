@@ -65,7 +65,7 @@ def feedback(prerelease=False):
 
     for k in vallist:
         tuple = k.split('=')
-        value_str = urllib.unquote_plus(tuple[1])
+        value_str = urllib.parse.unquote_plus(tuple[1])
         lines = value_str.split('\\n')
         value_str = '%s' % ''.join(['%s\n\t' % (line) for line in lines])
         FILE.write('%s = %s\n' % (tuple[0], value_str))
@@ -98,7 +98,7 @@ def startup():
 #     for each value in the query string, print it after the line start           
     for k in vallist:
         tuple = k.split('=')
-        FILE.write('%s = %s, ' % (tuple[0], urllib.unquote_plus(tuple[1])))
+        FILE.write('%s = %s, ' % (tuple[0], urllib.parse.unquote_plus(tuple[1])))
     
 #     terminate the line     
     FILE.write('\n')
