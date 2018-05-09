@@ -1,5 +1,4 @@
 import flask
-from werkzeug.utils import secure_filename
 import sys
 import os
 import urllib
@@ -7,19 +6,21 @@ from time import strftime, time
 
 app = flask.Flask(__name__)
 
-@app.route('/')
-def homepage():
-    return 'To validate a file, send a POST request with the file as "multipart/form-data" to https://validatemyfile.herokuapp.com/validate. You can do this with curl from the command line: curl https://validatemyfile.herokuapp.com/validate  -F "file=@test.fasta"'
-
-@app.route('/pyMesquiteFeedback', methods=['POST', 'GET'])
-def feedback_log():
-    feedback()
-    return flask.render_template('feedback.html')
-
-@app.route('/pyMesquiteFeedbackPrerelease', methods=['POST', 'GET'])
-def feedback_prerelease_log():
-    feedback(prerelease=True)
-    return flask.render_template('feedback.html')
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:path>')
+def catch_all(path):
+    if path == 'pyMesquiteFeedback':
+        feedback()
+        return flask.render_template('feedback.html')
+    elif path == 'pyMesquiteFeedbackPrerelease:':
+        feedback(prerelease=True)
+        return flask.render_template('feedback.html')
+    elif path == 'pyMesquiteStartup':
+        startup()
+    elif path == 'pyMesquiteBeans':
+        beans()
+    else:
+        return redirect('mesquiteproject.github.io')
 
 def feedback(prerelease=False):
     if prerelease:
@@ -74,7 +75,6 @@ def feedback(prerelease=False):
     FILE.flush()
     FILE.close()
 
-@app.route('/pyMesquiteStartup', methods=['POST', 'GET'])
 def startup():
 #<Request 'https://mesquiteproject.herokuapp.com/pyMesquiteStartup?build=	PreRelease-875	OS+%3D	Mac+OS+X	10.11.6	java+%3D	1.8.0_111	Oracle+Corporation' [GET]>
     
@@ -108,7 +108,6 @@ def startup():
     FILE.close()
     return flask.render_template('startup.html')
 
-@app.route('/pyMesquiteBeans', methods=['POST', 'GET'])
 def beans():
     ip = flask.request.remote_addr
     raw = flask.request.query_string.decode("utf-8")
