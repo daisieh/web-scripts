@@ -17,8 +17,10 @@ def catch_all(path):
         return flask.render_template('feedback.html')
     elif path == 'pyMesquiteStartup':
         startup()
+        return flask.render_template('startup.html')
     elif path == 'pyMesquiteBeans':
         beans()
+        return flask.render_template('beans.html')
     else:
         return flask.redirect('https://mesquiteproject.github.io')
 
@@ -108,7 +110,6 @@ def startup():
 #     flush and close 
     FILE.flush()
     FILE.close()
-    return flask.render_template('startup.html')
 
 def beans():
     ip = flask.request.remote_addr
@@ -139,4 +140,3 @@ def beans():
     # flush and close 
     FILE.flush()
     FILE.close()
-    return flask.render_template('beans.html')
