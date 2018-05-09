@@ -12,10 +12,67 @@ def homepage():
     return 'To validate a file, send a POST request with the file as "multipart/form-data" to https://validatemyfile.herokuapp.com/validate. You can do this with curl from the command line: curl https://validatemyfile.herokuapp.com/validate  -F "file=@test.fasta"'
 
 @app.route('/pyMesquiteFeedback', methods=['POST', 'GET'])
-def feedback():
-#     if flask.request.method == 'POST':
-    app.logger.error('%s', flask.request)
-    return flask.render_template('error.html', error=flask.request)
+def feedback_log():
+    feedback()
+    return flask.render_template('feedback.html')
+
+@app.route('/pyMesquiteFeedbackPrerelease', methods=['POST', 'GET'])
+def feedback_prerelease_log():
+    feedback(prerelease=True)
+    return flask.render_template('feedback.html')
+
+def feedback(prerelease=False):
+    if prerelease:
+        filename = "feedbackPrerelease"
+    else:
+        filename = "feedback"
+    
+    ##############################################################################
+    # Option A - single log file
+    ##############################################################################
+    # if you want one single file use this block
+    
+    feedbackfile = "error_" + filename + ".log"
+    ##############################################################################
+
+    ##############################################################################
+    # Option B - multiple log files
+    ##############################################################################
+    # if you want one file for each postback use this block
+    #feedbackfile = '/data/feedback/' + filename + time() + '.log'
+    ##############################################################################
+
+    FILE = open(feedbackfile, "a")
+
+    ip = flask.request.remote_addr
+
+    raw = sys.stdin.readline()
+    
+    vallist = raw.split('&')
+
+    banner = '#' * 80
+
+    FILE.write('\n' + banner + '\n')
+    FILE.write('local time is: %s\n' % (strftime("%Y-%m-%d %H:%M:%S")))
+
+    line = '-' * 80
+    FILE.write(line + '\n')
+    FILE.write(' ip: %s\n' % (ip))
+    FILE.write(line + '\n')
+    FILE.write(' body: \n')
+    FILE.write(line + '\n')
+
+    for k in vallist:
+        tuple = k.split('=')
+        value_str = urllib.unquote_plus(tuple[1])
+        lines = value_str.split('\\n')
+        value_str = '%s' % ''.join(['%s\n\t' % (line) for line in lines])
+        FILE.write('%s = %s\n' % (tuple[0], value_str))
+
+    FILE.write(banner + '\n')
+    
+    FILE.flush()
+    FILE.close()
 
 @app.route('/pyMesquiteStartup', methods=['POST', 'GET'])
 def startup():
@@ -23,7 +80,6 @@ def startup():
     
     ip = flask.request.remote_addr
     raw = flask.request.query_string.decode("utf-8")
-    app.logger.error('%s', raw)
 
     # the file we'll be appending version information to 
     feedbackfile = "version_feedback.log"
@@ -37,12 +93,13 @@ def startup():
     FILE.write('\t')
            
 #     split the query string by the value delimiter, &. 
-    vallist = urllib.parse.parse_qs(raw)
+    vallist = raw.split('&')
 
 #     for each value in the query string, print it after the line start           
-    for key, value in vallist.items():
-        FILE.write('%s = %s, ' % (key, value))
-
+    for k in vallist:
+        tuple = k.split('=')
+        FILE.write('%s = %s, ' % (tuple[0], urllib.unquote_plus(tuple[1])))
+    
 #     terminate the line     
     FILE.write('\n')
 
@@ -53,6 +110,32 @@ def startup():
 
 @app.route('/pyMesquiteBeans', methods=['POST', 'GET'])
 def beans():
-#     if flask.request.method == 'POST':
-    app.logger.info('%s', flask.request)
-    return flask.render_template('error.html', error=flask.request)
+    ip = flask.request.remote_addr
+    raw = flask.request.query_string.decode("utf-8")
+                
+    # the file we'll be appending version information to 
+    beanlogfile = "beans.log"
+
+    # open the file w/ appending mode 
+    FILE = open(beanlogfile, "a")
+
+    # split the query string by the value delimiter, &. 
+    vallist = raw.split('&')
+
+    # print the start of the line with current time
+    FILE.write('[%s] - ' % strftime("%Y-%m-%d %H:%M:%S"))
+    FILE.write('ip = \t%s' % (ip))
+    FILE.write('\t')
+           
+    # for each value in the query string, print it after the line start           
+    for k in vallist:
+        FILE.write('%s' % (k))
+        FILE.write('\t')
+    
+    # terminate the line     
+    FILE.write('\n')
+
+    # flush and close 
+    FILE.flush()
+    FILE.close()
+    return flask.render_template('beans.html')
