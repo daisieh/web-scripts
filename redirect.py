@@ -20,7 +20,7 @@ def catch_all(path):
     elif path == 'pyMesquiteBeans':
         beans()
     else:
-        return redirect('mesquiteproject.github.io')
+        return flask.redirect('mesquiteproject.github.io')
 
 def feedback(prerelease=False):
     if prerelease:
